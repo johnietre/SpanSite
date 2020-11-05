@@ -13,12 +13,15 @@ import (
   "encoding/json"
   "fmt"
   "html/template"
-  _ "github.com/mattn/go-sqlite3"
   "log"
   "net"
   "net/http"
   "strings"
   "sync" // Only going to be used while sqlite is used
+)
+
+import (
+  _ "github.com/mattn/go-sqlite3"
 )
 
 // Struct for word entries
@@ -37,8 +40,8 @@ type PageData struct {
 }
 
 var (
-  IP string = "10.8.24.180"
-  // IP string = "localhost"
+  // IP string = "10.8.24.180"
+  // IP string = "129.119.172.61"
   WebPort string = ":8008"
   APIPort string = ":9000"
   lock sync.Mutex
@@ -51,11 +54,11 @@ func WebpageServer() {
   log.Fatal(http.ListenAndServe(IP + WebPort, nil))
 }
 
-func main() {
-  log.Printf("Running on %s%s (API %s)", IP, WebPort, APIPort)
-  WebpageServer()
-  go APIServer()
-}
+// func main() {
+//   log.Printf("Running on %s%s (API %s)", IP, WebPort, APIPort)
+//   go APIServer()
+//   WebpageServer()
+// }
 
 func checkErr(err error) bool {
   if err != nil {
@@ -134,7 +137,7 @@ func register(fname, lname, username, email, password string) {
   }
   defer db.Close()
   var stmt string
-  stmt = fmt.Sprintf(`SELECT * FROM users WHERE email="%s"`)
+  stmt = fmt.Sprintf(`SELECT * FROM users WHERE email="%s"`, email)
   rows, err := db.Query(stmt)
   if checkErr(err) {
     return
@@ -189,7 +192,7 @@ func PageHandler(w http.ResponseWriter, r *http.Request) {
       page = PageData{Msg: "Search for words or phrases"}
     }
   }
-  ts, err := template.ParseFiles("index.html")
+  ts, err := template.ParseFiles("../templates/index.html")
   if err != nil {
     log.Println(err)
     http.Error(w, "Internal Server Error... My bad", 500)
