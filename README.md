@@ -1,2 +1,2 @@
 # SpanSite
-Sight to help with my spanish
+Site to help with my spanish
