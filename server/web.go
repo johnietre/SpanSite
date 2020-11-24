@@ -8,6 +8,10 @@ import (
   "os"
 )
 
+type WordPage struct {
+  //
+}
+
 var (
   webLogger *log.Logger
   errorPage string
@@ -47,7 +51,7 @@ func routes() *http.ServeMux {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-  ts, err := template.ParseFiles(tf+"indexs.html")
+  ts, err := template.ParseFiles(tf+"index.html")
   if err != nil {
     webLogger.Println(err)
     fmt.Fprintf(w, errorPage, "500")
