@@ -1,4 +1,4 @@
-# SpanSite
+# Lang Site
 Site to help with my spanish
 # Todo
 - Create CLI
